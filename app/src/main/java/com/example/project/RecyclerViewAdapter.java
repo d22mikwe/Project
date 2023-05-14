@@ -1,5 +1,6 @@
 package com.example.project;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,30 +15,31 @@ import java.util.List;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
 
-    private List<DogItem> items;
+    private List<DogItem> dogItemList;
     private LayoutInflater layoutInflater;
     private OnClickListener onClickListener;
 
 
     public RecyclerViewAdapter(Context context, List<DogItem> items, OnClickListener onClickListener) {
         this.layoutInflater = LayoutInflater.from(context);
-        this.items = items;
+        this.dogItemList = items;
         this.onClickListener = onClickListener;
     }
 
+
     @Override
     @NonNull
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(layoutInflater.inflate(R.id.item_list, parent, false));
+    public RecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new ViewHolder(layoutInflater.inflate(R.layout.item_list, parent, false));
     }
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAdapter.ViewHolder holder, int position) {
-
+        holder.title.setText(dogItemList.get(position).getName());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return dogItemList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -51,9 +53,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         @Override
         public void onClick(View view) {
-            onClickListener.onClick(items.get(getAdapterPosition()));
+            onClickListener.onClick(dogItemList.get(getAdapterPosition()));
         }
 
 
+    }
+    public interface OnClickListener{
+        void onClick(DogItem item);
     }
 }
